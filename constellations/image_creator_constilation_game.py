@@ -1,44 +1,86 @@
-
-
-
-
-# importing required library
 import pygame
 import time
 
 
-# activate the pygame library .
 pygame.init()
-X = 768
-Y = 768
- 
-# create the display surface object
-# of specific dimension..e(X, Y).
-scrn = pygame.display.set_mode((X, Y))
- 
-# set the pygame window name
-pygame.display.set_caption('image')
- 
-# create a surface object, image is drawn on it.
-imp = pygame.image.load("test.jpg").convert()
- 
-# Using blit to copy content from one surface to other
-scrn.blit(imp, (0, 0))
- 
-# paint screen one time
-pygame.display.flip()
+
+
+scrn = pygame.display.set_mode((900, 900))
+
+constellation_points = []
+
+pygame.display.set_caption('Image')
+
+
+list_images = ['Ursa_Major.png']
+
+imp = pygame.image.load(list_images[0]).convert()
+background = pygame.image.load('empty_background.png').convert()
+imp_2 = pygame.image.load("stock.jpg").convert()
+
+# Fonts and colors
+font = pygame.font.Font(None, 64)
+BLACK = (0, 0, 0)
+WHITE = (255,255,255)
+Col = (255,255,0)
+
+# Main loop
 status = True
-while (status):
- 
-  # iterate over the list of Event objects
-  # that was returned by pygame.event.get() method.
-    for i in pygame.event.get():
- 
-        # if event object type is QUIT
-        # then quitting the pygame
-        # and program both.
-        if i.type == pygame.QUIT:
-            status = False
-            
-# deactivates the pygame library
-pygame.quit()
+seconds = 4
+
+def draw_constellation():
+      # Fill the screen with black
+
+    # Draw the lines connecting the constellation points
+    if len(constellation_points) > 1:
+        for i in range(len(constellation_points) - 1):
+            pygame.draw.line(scrn, WHITE, constellation_points[i], constellation_points[i + 1], 2)
+
+    # Draw the constellation points
+    for point in constellation_points:
+        pygame.draw.circle(scrn, WHITE, point, 5)
+
+    pygame.display.flip()  # Update the display
+
+def main():
+    running = True
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                constellation_points.append((x, y))
+                draw_constellation()
+                print(constellation_points)
+    pygame.display.flip()  # Update the display
+    
+    pygame.quit()
+    sys.exit()
+
+
+def countdown(seconds):
+    while seconds > 0:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+        scrn.blit(imp, (0, 0))
+        text_color = Col if seconds <= 10 else BLACK
+        text = font.render(str(seconds), True, text_color)
+        text_rect = text.get_rect(center=(200, 200))
+        scrn.blit(text, text_rect)
+        pygame.display.flip()
+        time.sleep(1)
+        seconds -= 1
+    scrn.blit(background, (0, 0))
+    pygame.display.flip()
+    main()
+    
+    
+    
+    pygame.display.flip()
+    
+
+countdown(seconds)
