@@ -3,25 +3,16 @@ import time
 import sys
 
 
-pygame.init()
-
 
 #############################################
 
 pygame.init()
 
-
 scrn = pygame.display.set_mode((800, 800))
-
 constellation_points = []
-
 pygame.display.set_caption('Image')
-
 check_coordinates = [100,100,100,50]
-
-
 list_images = ['Ursa_Major.png']
-
 imp = pygame.image.load(list_images[0]).convert()
 background = pygame.image.load('empty_background.png').convert()
 
