@@ -4,8 +4,8 @@ import sys
 import time
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 800
-constellation_points = []
 
+Ursa_Major_answers = [[116,98],[53,238],[334,150],[344,301],[462,472],[577,634],[738,672]]
 
 ###
 
@@ -91,18 +91,36 @@ class Reference:
 class Gameplay:
     def __init__(self):
         self.list_base_images = ['Ursa_Major_no_lines.png', 'Orion_no_lines.png', 'Cassiopeia_no_lines.png', 'Pegasus_no_lines.png', 'Sirius_no_lines.png']
+        self.line_started = False
         self.index = 0
         self.background = pygame.image.load(self.list_base_images[self.index])
         self.font = pygame.font.Font(None, 36)
         self.title_font = pygame.font.Font(None, 72)
         self.title = self.title_font.render("Connect the stars", True, (255, 255, 255))
         self.title_rect = self.title.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 8))
+        self.line_list = []
 
-    def handle_events(self, events):
+    def handle_events(self, events,screen):
         for event in events:
             if event.type == QUIT:
                 pygame.quit()
                 quit()
+            elif event.type == MOUSEBUTTONDOWN:
+                # Check if the mouse click is within 10 pixels of a point in Ursa_Major_answers
+                for point in Ursa_Major_answers:
+                    if abs(event.pos[0] - point[0]) <= 10 and abs(event.pos[1] - point[1]) <= 10:
+                        print("Correct!")
+                        if not self.line_started:
+                            # Start a new line
+                            self.line_started = True
+                            self.start_point = event.pos
+                        else:
+                            # Draw the line
+                            self.line_list.append([self.start_point, event.pos])
+                            # self.line_list.append(pygame.line(screen, WHITE, self.start_point, event.pos, 1))
+
+                            self.line_started = False
+
 
     def update(self):
         pass
@@ -111,6 +129,8 @@ class Gameplay:
         screen.fill((0, 0, 0))
         screen.blit(self.background, (0, 0))
         screen.blit(self.title, (200, 200))
+        for i in range(len(self.line_list)):
+            pygame.draw.line(screen, WHITE, self.line_list[i][0], self.line_list[i][1], 2)  
 
 
 def main():
@@ -140,7 +160,7 @@ def main():
             if next_screen:
                 current_screen = next_screen
         elif current_screen == "gameplay":
-            next_screen = gameplay.handle_events(events)
+            next_screen = gameplay.handle_events(events,screen)
             if next_screen:
                 current_screen = next_screen
 
