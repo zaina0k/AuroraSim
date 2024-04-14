@@ -156,7 +156,7 @@ def main():
             if next_screen:
                 current_screen = next_screen
         elif current_screen == "reference":
-            next_screen = reference.countdown(5,screen)
+            next_screen = reference.countdown(15,screen)
             if next_screen:
                 current_screen = next_screen
         elif current_screen == "gameplay":
