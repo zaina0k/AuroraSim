@@ -10,13 +10,12 @@ class MainMenu:
         self.title_font = pygame.font.Font(None, 72)
         self.title = self.title_font.render("Constellation Game", True, (255, 255, 255))
         self.title_rect = self.title.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
-        self.text = self.font.render("Press SPACE to start", True, (255, 255, 255))
-        self.text_rect = self.text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 150))
+        self.text = self.font.render("For idiot kids", True, (255, 255, 255))
+        self.text_rect = self.text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 75))
         self.button = self.font.render("Start", True, (255, 255, 255))
         self.button_color = (50, 200, 50)  # RGB color for the button
-        self.button_rect = pygame.Rect(SCREEN_WIDTH - 250, SCREEN_HEIGHT - 100, 200, 60)
-
-
+        self.button_rect = pygame.Rect(600,600,100,50)
+        self.button_text_rect = self.button.get_rect(center=self.button_rect.center)
 
     def handle_events(self, events):
         for event in events:
@@ -34,12 +33,13 @@ class MainMenu:
         screen.fill((0, 0, 0))
         screen.blit(self.title, self.title_rect.topleft)
         screen.blit(self.text, self.text_rect.topleft)
-        screen.blit(self.button, self.button_rect.bottomright)
+        pygame.draw.rect(screen, self.button_color, self.button_rect)  # Draw the button
+        screen.blit(self.button, self.button_text_rect)
 
 class Gameplay:
     def __init__(self):
-        self.font = pygame.font.Font(None, 36)
-        self.title = self.font.render("Gameplay", True, (255, 255, 255))
+        self.title_font = pygame.font.Font(None, 36)
+        self.title = self.title_font.render("Create the constillation", True, (255, 255, 255))
 
     def handle_events(self, events):
         for event in events:

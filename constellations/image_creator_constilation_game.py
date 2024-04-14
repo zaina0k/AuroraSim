@@ -1,16 +1,9 @@
 import pygame
 import time
+import sys
 
 
-
-
-
-
-
-
-
-
-
+pygame.init()
 
 
 #############################################
@@ -18,7 +11,7 @@ import time
 pygame.init()
 
 
-scrn = pygame.display.set_mode((900, 900))
+scrn = pygame.display.set_mode((800, 800))
 
 constellation_points = []
 
@@ -31,7 +24,7 @@ list_images = ['Ursa_Major.png']
 
 imp = pygame.image.load(list_images[0]).convert()
 background = pygame.image.load('empty_background.png').convert()
-imp_2 = pygame.image.load("stock.jpg").convert()
+
 
 # Fonts and colors
 font = pygame.font.Font(None, 64)
@@ -62,7 +55,7 @@ def draw_constellation():
     if button.collidepoint(mouse_x, mouse_y):
         next_pic=True
         return next_pic
-    if next_pic==True
+    if next_pic==True:
       print('cool')
 
     pygame.display.flip()  # Update the display
@@ -84,6 +77,8 @@ def main():
     pygame.quit()
     sys.exit()
 
+Col = (255,255,0)
+
 
 def countdown(seconds):
     while seconds > 0:
@@ -94,8 +89,7 @@ def countdown(seconds):
         scrn.blit(imp, (0, 0))
         text_color = Col if seconds <= 10 else BLACK
         text = font.render(str(seconds), True, text_color)
-        text_rect = text.get_rect(center=(100, 100))
-
+        text_rect = text.get_rect(center=(200, 200))
         scrn.blit(text, text_rect)
         pygame.display.flip()
         time.sleep(1)
@@ -103,10 +97,6 @@ def countdown(seconds):
     scrn.blit(background, (0, 0))
     pygame.display.flip()
     main()
-    
-    
-    
-    
     pygame.display.flip()
     
 
