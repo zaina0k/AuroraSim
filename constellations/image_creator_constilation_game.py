@@ -1,18 +1,7 @@
 import pygame
 import time
-
-
-
-
-
-
-
-
-
-
-
-
-
+import random
+import numpy as np
 #############################################
 
 pygame.init()
@@ -28,10 +17,28 @@ check_coordinates = [100,100,100,50]
 
 
 list_images = ['Ursa_Major.png','Cassiopeia.png','Orion.png','Sirus.png','Pegasus.png']
-
-imp = pygame.image.load(list_images[0]).convert()
+random_image_select = random.randint(1,len(list_images))-1
+imp = pygame.image.load(list_images[random_image_select]).convert()
 background = pygame.image.load('empty_background.png').convert()
-imp_2 = pygame.image.load("stock.jpg").convert()
+#imp_2 = pygame.image.load("stock.jpg").convert()
+
+if list_images(random_image_select) == 'Ursa_Major.png':
+  correct_locations = [(275, 240), (119, 416), (615, 285), (638, 564), (873, 877)]
+  star_count = 7
+elif list_images(random_image_select) == 'Cassiopeia.png':
+  correct_locations = None
+  star_count = 5
+elif list_images(random_image_select) == 'Orion.png':
+  correct_locations = None
+  star_count = 17
+elif list_images(random_image_select) == 'Sirus.png':
+  correct_locations = None
+  star_count = 12
+elif list_images(random_image_select) == 'Pegasus.png':
+  correct_locations = None
+  star_count = 12
+
+
 
 # Fonts and colors
 font = pygame.font.Font(None, 64)
@@ -44,7 +51,7 @@ status = True
 seconds = 4
 
 def draw_constellation():
-      # Fill the screen with black
+    # Fill the screen with black
     button=pygame.draw.rect(scrn,BLUE,check_coordinates)
     text = font.render('Check awnswer', True, WHITE)
     text_rect = text.get_rect(center=(50, 50))
@@ -62,7 +69,7 @@ def draw_constellation():
     if button.collidepoint(mouse_x, mouse_y):
         next_pic=True
         return next_pic
-    if next_pic==True
+    if next_pic==True:
       print('cool')
 
     pygame.display.flip()  # Update the display
@@ -79,6 +86,19 @@ def main():
                 constellation_points.append((x, y))
                 draw_constellation()
                 print(constellation_points)
+                # Circle equation to check if user-selected point is within allowed circle radius region
+                radius = 10 # Change if unsufficient 
+                inside_region = []
+                for i in range(len(correct_locations)):
+                  center_x = correct_locations(i,1)
+                  center_y = correct_locations(i,2)
+                  if (x - center_x)**2 + (y - center_y)**2 <= radius**2
+                  inside_region[i] = True
+
+                if np.count_nonzero(inside_region.sum()) == star_count:
+                  star_selection_success = True
+
+
     pygame.display.flip()  # Update the display
          
     pygame.quit()
