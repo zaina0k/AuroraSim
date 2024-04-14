@@ -1,11 +1,11 @@
 import pygame # type: ignore
 from pygame.locals import * # type: ignore
 import sys
+import time
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 800
 constellation_points = []
 
-list_base_images = ['Ursa_Major_no_lines.png', 'Orion_no_lines.png', 'Cassiopeia_no_lines.png', 'Pegasus_no_lines.png', 'Sirius_no_lines.png']
 
 ###
 
@@ -59,19 +59,44 @@ class MainMenu:
 class Reference:
     def __init__(self):
         self.list_ref_images = ['Ursa_Major.png', 'Orion.png', 'Cassiopeia.png', 'Pegasus.png', 'Sirius.png']
+        self.index = 0
         self.background = pygame.image.load(self.list_ref_images[0])
+        self.font = pygame.font.Font(None, 75)
 
     def update(self):
         pass    
     
+    def countdown(self,seconds,screen):
+        while int(seconds) >0:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    return
+            self.background = pygame.image.load(self.list_ref_images[self.index])
+            screen.blit(self.background, (0, 0))
+            text_color = Col if seconds <= 15 else BLACK
+            self.text = self.font.render(str(seconds), True, text_color)
+            self.text_rect = self.text.get_rect(center=(700, 100))
+            screen.blit(self.text, self.text_rect)
+            pygame.display.flip()
+            time.sleep(1)
+            seconds -= 1
+        return "gameplay"
+
+
     def draw(self, screen):
         screen.fill((0, 0, 0))
         screen.blit(self.background, (0, 0))
 
 class Gameplay:
     def __init__(self):
-        self.title_font = pygame.font.Font(None, 36)
-        self.title = self.title_font.render("Create the constillation", True, (255, 255, 255))
+        self.list_base_images = ['Ursa_Major_no_lines.png', 'Orion_no_lines.png', 'Cassiopeia_no_lines.png', 'Pegasus_no_lines.png', 'Sirius_no_lines.png']
+        self.index = 0
+        self.background = pygame.image.load(self.list_base_images[self.index])
+        self.font = pygame.font.Font(None, 36)
+        self.title_font = pygame.font.Font(None, 72)
+        self.title = self.title_font.render("Connect the stars", True, (255, 255, 255))
+        self.title_rect = self.title.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 8))
 
     def handle_events(self, events):
         for event in events:
@@ -84,7 +109,7 @@ class Gameplay:
 
     def draw(self, screen):
         screen.fill((0, 0, 0))
-        screen.blit(background, (0, 0))
+        screen.blit(self.background, (0, 0))
         screen.blit(self.title, (200, 200))
 
 
@@ -111,7 +136,7 @@ def main():
             if next_screen:
                 current_screen = next_screen
         elif current_screen == "reference":
-            next_screen = gameplay.handle_events(events)
+            next_screen = reference.countdown(5,screen)
             if next_screen:
                 current_screen = next_screen
         elif current_screen == "gameplay":
@@ -124,7 +149,7 @@ def main():
             main_menu.draw(screen)
         elif current_screen == "reference":
             reference.update()
-            reference.draw(screen)
+            reference.draw(screen,)
         elif current_screen == "gameplay":
             gameplay.update()
             gameplay.draw(screen)
